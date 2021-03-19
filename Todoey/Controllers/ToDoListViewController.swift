@@ -10,12 +10,10 @@ import UIKit
 
 class ToDoListViewController: UITableViewController {
     
-    var itemArray = [ToDoItem]()
+    let toDoModel = ToDoModel()
         
     override func viewDidLoad() {
         // Retrieve any stored ToDoItems
-        
-        itemArray = StorageStateController.retrieveToDoItems()
         
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -24,56 +22,41 @@ class ToDoListViewController: UITableViewController {
     //MARK: - TableView Datasource Methods
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        return itemArray.count
+        return toDoModel.count()
     }
     
     override func tableView(_ tableView: UITableView,
                             cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ToDoItemCell", for: indexPath)
         
-        let item = itemArray[indexPath.row]
+        let item = toDoModel.retrieveItem(at: indexPath.row)
         
         cell.textLabel!.text = item.toDo
-
         cell.accessoryType = item.checked ? .checkmark : .none
         
         return cell
     }
     
-    //MARK: - TableView Delegate Methods
+    //MARK: - TableView Delegate Methods - Row Selected
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-
-        itemArray[indexPath.row].checked = !itemArray[indexPath.row].checked
-
-        // Save Data
-        StorageStateController.saveData(toDoItems: self.itemArray)
+        // Toggle item checked, save data, reload view, play deselection animation
+        toDoModel.toggleItemChecked(at: indexPath.row)
+        toDoModel.saveItems()
         
         tableView.reloadData()
-                
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
     //MARK: - Add New Items
     
     @IBAction func addButtonPressed(_ sender: Any) {
-        
         var textField = UITextField()
         
         let alert = UIAlertController(title: "What's next?", message: "", preferredStyle: .alert)
-        
         let action = UIAlertAction(title: "Add", style: .default) { (action) in
-           
-            // What happens once user chooses to add an item
-            
-            let newItem = ToDoItem(toDo: textField.text!)
-            
-            self.itemArray.append(newItem)
-            
-            // Save data
-            StorageStateController.saveData(toDoItems: self.itemArray)
-            
+            // Add item to model, reload view
+            self.toDoModel.addItem(text: textField.text!)
             self.tableView.reloadData()
         }
         
