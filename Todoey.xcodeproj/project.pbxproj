@@ -10,6 +10,7 @@
 		3E5994D926047CF9007DED7B /* ToDoItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E5994D826047CF9007DED7B /* ToDoItem.swift */; };
 		3E5994E5260489DA007DED7B /* StorageStateController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E5994E4260489DA007DED7B /* StorageStateController.swift */; };
 		3E5994EB260490B7007DED7B /* ToDoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E5994EA260490B7007DED7B /* ToDoModel.swift */; };
+		3E5994F02609DB2B007DED7B /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3E5994EE2609DB2B007DED7B /* DataModel.xcdatamodeld */; };
 		EB2BE4FA239524DB00FB933B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB2BE4F9239524DB00FB933B /* AppDelegate.swift */; };
 		EB2BE4FE239524DB00FB933B /* ToDoListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB2BE4FD239524DB00FB933B /* ToDoListViewController.swift */; };
 		EB2BE501239524DB00FB933B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EB2BE4FF239524DB00FB933B /* Main.storyboard */; };
@@ -21,6 +22,7 @@
 		3E5994D826047CF9007DED7B /* ToDoItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoItem.swift; sourceTree = "<group>"; };
 		3E5994E4260489DA007DED7B /* StorageStateController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageStateController.swift; sourceTree = "<group>"; };
 		3E5994EA260490B7007DED7B /* ToDoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoModel.swift; sourceTree = "<group>"; };
+		3E5994EF2609DB2B007DED7B /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
 		EB2BE4F6239524DB00FB933B /* Todoey.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Todoey.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB2BE4F9239524DB00FB933B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EB2BE4FD239524DB00FB933B /* ToDoListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoListViewController.swift; sourceTree = "<group>"; };
@@ -68,9 +70,17 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		3E5994F22609DB32007DED7B /* Data Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "Data Model";
+			sourceTree = "<group>";
+		};
 		EB2BE4ED239524DB00FB933B = {
 			isa = PBXGroup;
 			children = (
+				3E5994EE2609DB2B007DED7B /* DataModel.xcdatamodeld */,
 				EB2BE4F8239524DB00FB933B /* Todoey */,
 				EB2BE4F7239524DB00FB933B /* Products */,
 			);
@@ -87,6 +97,7 @@
 		EB2BE4F8239524DB00FB933B /* Todoey */ = {
 			isa = PBXGroup;
 			children = (
+				3E5994F22609DB32007DED7B /* Data Model */,
 				EB2BE4F9239524DB00FB933B /* AppDelegate.swift */,
 				3E5994DC26047D0A007DED7B /* Model */,
 				3E5994DF26048023007DED7B /* Views */,
@@ -171,6 +182,7 @@
 				EB2BE4FE239524DB00FB933B /* ToDoListViewController.swift in Sources */,
 				EB2BE4FA239524DB00FB933B /* AppDelegate.swift in Sources */,
 				3E5994EB260490B7007DED7B /* ToDoModel.swift in Sources */,
+				3E5994F02609DB2B007DED7B /* DataModel.xcdatamodeld in Sources */,
 				3E5994E5260489DA007DED7B /* StorageStateController.swift in Sources */,
 				3E5994D926047CF9007DED7B /* ToDoItem.swift in Sources */,
 			);
@@ -374,6 +386,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		3E5994EE2609DB2B007DED7B /* DataModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				3E5994EF2609DB2B007DED7B /* DataModel.xcdatamodel */,
+			);
+			currentVersion = 3E5994EF2609DB2B007DED7B /* DataModel.xcdatamodel */;
+			path = DataModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = EB2BE4EE239524DB00FB933B /* Project object */;
 }
