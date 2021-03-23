@@ -29,10 +29,10 @@ class ToDoListViewController: UITableViewController {
                             cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ToDoItemCell", for: indexPath)
         
-        let item = toDoModel.retrieveItem(at: indexPath.row)
-        
-        cell.textLabel!.text = item.toDo
-        cell.accessoryType = item.checked ? .checkmark : .none
+//        let item = toDoModel.retrieveItem(at: indexPath.row)
+//
+//        cell.textLabel!.text = item.toDo
+//        cell.accessoryType = item.checked ? .checkmark : .none
         
         return cell
     }
