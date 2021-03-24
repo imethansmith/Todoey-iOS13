@@ -11,11 +11,13 @@ import UIKit
 class ToDoListViewController: UITableViewController {
     
     let toDoModel = ToDoModel()
-        
+    
+    @IBOutlet var toDoItemsList: UITableView!
+    
     override func viewDidLoad() {
         // Retrieve any stored ToDoItems
-        
         super.viewDidLoad()
+        toDoModel.delegate = self
         // Do any additional setup after loading the view.
     }
     
@@ -28,12 +30,11 @@ class ToDoListViewController: UITableViewController {
     override func tableView(_ tableView: UITableView,
                             cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ToDoItemCell", for: indexPath)
-
         let item = toDoModel.retrieveItem(at: indexPath.row)
-
+        
         cell.textLabel!.text = item.toDo
         cell.accessoryType = item.checked ? .checkmark : .none
-
+        
         return cell
     }
     
@@ -43,8 +44,7 @@ class ToDoListViewController: UITableViewController {
         // Toggle item checked, save data, reload view, play deselection animation
         toDoModel.toggleItemChecked(at: indexPath.row)
         toDoModel.saveItems()
-
-        tableView.reloadData()
+        
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
@@ -52,22 +52,36 @@ class ToDoListViewController: UITableViewController {
     
     @IBAction func addButtonPressed(_ sender: Any) {
         var textField = UITextField()
-
+        
         let alert = UIAlertController(title: "What's next?", message: "", preferredStyle: .alert)
         let action = UIAlertAction(title: "Add", style: .default) { (action) in
             // Add item to model, reload view
             self.toDoModel.addItem(text: textField.text!)
-            self.tableView.reloadData()
         }
-
+        
         alert.addTextField { (alertTextField) in
             alertTextField.placeholder = "Enter your next task."
             textField = alertTextField
         }
-
         alert.addAction(action)
-
+    
         present(alert, animated: true, completion: nil)
     }
 }
 
+//MARK: - Protocol Conformance, Reload Data via Delegate
+
+extension ToDoListViewController: ToDoListDelegate {
+    func reloadData() {
+        // Reload current TableView
+        DispatchQueue.main.async {
+            self.toDoItemsList.reloadData()
+        }
+    }
+}
+
+    //MARK: - Setup of ToDoListDelegate Protocol
+
+protocol ToDoListDelegate {
+    func reloadData()
+}

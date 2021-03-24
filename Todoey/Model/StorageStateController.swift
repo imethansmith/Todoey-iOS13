@@ -12,14 +12,13 @@ import CoreData
 
 class StorageStateController {
     static let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("ToDoItems.plist")
-    
     static let coreDataContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 }
 
 //MARK: - Saving and Reading of Saved Data (ToDoItem Array)
 
 extension StorageStateController {
-    static func saveData(toDoItems: [ToDoItem]) {
+    static func saveToDoItems() {
         do {
             try coreDataContext.save()
         } catch {
