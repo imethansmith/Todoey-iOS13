@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import CoreData
 
 class StorageStateController {
     static let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("ToDoItems.plist")
@@ -22,19 +23,17 @@ extension StorageStateController {
         do {
             try coreDataContext.save()
         } catch {
-            print("Error encoding saved data array: \(error)")
+            print("Error saving context: \(error)")
         }
     }
     
-//    static func retrieveToDoItems() -> [ToDoItem] {
-//        if let data = try? Data(contentsOf: StorageStateController.dataFilePath!) {
-//            let decoder = PropertyListDecoder()
-//            do {
-//                return try decoder.decode([ToDoItem].self, from: data)
-//            } catch {
-//                print("Error decoding items. \(error)")
-//            }
-//        }
-//        return [ToDoItem]()
-//    }
+    static func retrieveToDoItems() -> [ToDoItem] {
+        let request : NSFetchRequest<ToDoItem> = ToDoItem.fetchRequest()
+        do {
+            return try coreDataContext.fetch(request)
+        } catch {
+            print("Error fetching data from context: \(error)")
+            return [ToDoItem]()
+        }
+    }
 }

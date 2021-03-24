@@ -12,11 +12,15 @@ class ToDoModel {
     var ToDoListArray = [ToDoItem]()
     
     init() {
-//        ToDoListArray = StorageStateController.retrieveToDoItems()
+        ToDoListArray = StorageStateController.retrieveToDoItems()
     }
     
     func addItem(text: String) {
-        ToDoListArray.append(ToDoItem(context: StorageStateController.coreDataContext))
+        let newItem = ToDoItem(context: StorageStateController.coreDataContext)
+        newItem.toDo = text
+        newItem.checked = false
+        
+        ToDoListArray.append(newItem)
         
         // Save data
         saveItems()
