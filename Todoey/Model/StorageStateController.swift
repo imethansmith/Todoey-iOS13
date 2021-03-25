@@ -13,38 +13,49 @@ import UIKit
 class StorageStateController {
     static let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("ToDoItems.plist")
     static let coreDataContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-}
-
-//MARK: - Saving and Reading of Saved Data (ToDoItem Array)
-
-extension StorageStateController {
-    static func saveToDoItems() {
+    
+    static func saveContext() {
         do {
             try coreDataContext.save()
         } catch {
             print("Error saving context: \(error)")
         }
     }
+}
+
+//MARK: - Saving, Reading & Searching of ToDoItem - Core Data
+
+extension StorageStateController {
     
-    static func retrieveToDoItems() -> [ToDoItem]? {
-        let request : NSFetchRequest<ToDoItem> = ToDoItem.fetchRequest()
-        return fetchToDoItemsArray(request: request)
-    }
     
     static func searchItem(searchText: String) -> [ToDoItem]? {
         let request : NSFetchRequest<ToDoItem> = ToDoItem.fetchRequest()
-
+        
         request.predicate = NSPredicate(format: "toDo CONTAINS[cd] %@", searchText)
         request.sortDescriptors = [NSSortDescriptor(key: "toDo", ascending: true)]
         return fetchToDoItemsArray(request: request)
     }
     
-    static func fetchToDoItemsArray(request: NSFetchRequest<ToDoItem>) -> [ToDoItem]? {
+    static func fetchToDoItemsArray(request: NSFetchRequest<ToDoItem> = ToDoItem.fetchRequest()) -> [ToDoItem] {
         do {
             return try coreDataContext.fetch(request)
         } catch {
             print("Error fetching data from context: \(error)")
-            return nil
+            return [ToDoItem()]
+        }
+    }
+}
+
+//MARK: - Saving, Reading & Searching of Categories - Core Data
+
+extension StorageStateController {
+    
+    static func fetchCategories(request: NSFetchRequest<Category> = Category.fetchRequest()) -> [Category] {
+        do {
+            return try coreDataContext.fetch(request)
+        } catch {
+            print("Error fetching data from context: \(error)")
+            return [Category()]
         }
     }
 }

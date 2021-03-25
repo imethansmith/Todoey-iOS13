@@ -10,34 +10,41 @@ import Foundation
 
 class ToDoModel {
     
-    var ToDoListArray = [ToDoItem]()
-    var toDoItemContext = StorageStateController.coreDataContext
+    var toDoListArray = [ToDoItem]()
+    var coreDataContext = StorageStateController.coreDataContext
     var delegate: ToDoListDelegate!
     
     init() {
-        if let pastItems = StorageStateController.retrieveToDoItems() {
-            ToDoListArray = pastItems
+        retrieveFullToDoItems()
+    }
+    
+    func retrieveFullToDoItems() {
+        toDoListArray = StorageStateController.fetchToDoItemsArray()
+        
+        // If delegate has been initialised
+        if delegate != nil {
+            delegate.reloadData()
         }
     }
     
     func addItem(text: String) {
-        let newItem = ToDoItem(context: toDoItemContext)
+        let newItem = ToDoItem(context: coreDataContext)
         newItem.toDo = text
         newItem.checked = false
         
-        ToDoListArray.append(newItem)
+        toDoListArray.append(newItem)
         
         // Save appended list
         saveItems()
     }
     
     func retrieveItem(at: Int) -> ToDoItem {
-        return ToDoListArray[at]
+        return toDoListArray[at]
     }
     
-    func searchItem(searchText: String) {
+    func searchItems(searchText: String) {
         if let result = StorageStateController.searchItem(searchText: searchText) {
-            ToDoListArray = result
+            toDoListArray = result
         } else {
             print("No items found.")
         }
@@ -45,7 +52,7 @@ class ToDoModel {
     }
     
     func toggleItemChecked(at: Int) {
-        ToDoListArray[at].checked = !ToDoListArray[at].checked
+        toDoListArray[at].checked = !toDoListArray[at].checked
 //        toDoItemContext.delete(ToDoListArray[at])
 //        ToDoListArray.remove(at: at)
         
@@ -54,11 +61,11 @@ class ToDoModel {
     }
     
     func count() -> Int {
-        return ToDoListArray.count
+        return toDoListArray.count
     }
     
     func saveItems() {
         delegate.reloadData()
-        StorageStateController.saveToDoItems()
+        StorageStateController.saveContext()
     }
 }
