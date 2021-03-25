@@ -64,12 +64,20 @@ class ToDoListViewController: UITableViewController {
             textField = alertTextField
         }
         alert.addAction(action)
-    
+        
         present(alert, animated: true, completion: nil)
     }
 }
 
-//MARK: - Protocol Conformance, Reload Data via Delegate
+//MARK: - UISearchBarDelegate - Search Bar Delegate
+
+extension ToDoListViewController: UISearchBarDelegate {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        toDoModel.searchItem(searchText: searchBar.text!)
+    }
+}
+
+//MARK: - ToDoListDelegate - Reload Data via Delegate
 
 extension ToDoListViewController: ToDoListDelegate {
     func reloadData() {
@@ -80,7 +88,7 @@ extension ToDoListViewController: ToDoListDelegate {
     }
 }
 
-    //MARK: - Setup of ToDoListDelegate Protocol
+//MARK: - Setup of ToDoListDelegate Protocol
 
 protocol ToDoListDelegate {
     func reloadData()

@@ -15,7 +15,9 @@ class ToDoModel {
     var delegate: ToDoListDelegate!
     
     init() {
-        ToDoListArray = StorageStateController.retrieveToDoItems()
+        if let pastItems = StorageStateController.retrieveToDoItems() {
+            ToDoListArray = pastItems
+        }
     }
     
     func addItem(text: String) {
@@ -33,6 +35,15 @@ class ToDoModel {
         return ToDoListArray[at]
     }
     
+    func searchItem(searchText: String) {
+        if let result = StorageStateController.searchItem(searchText: searchText) {
+            ToDoListArray = result
+        } else {
+            print("No items found.")
+        }
+        delegate.reloadData()
+    }
+    
     func toggleItemChecked(at: Int) {
         ToDoListArray[at].checked = !ToDoListArray[at].checked
 //        toDoItemContext.delete(ToDoListArray[at])
@@ -42,12 +53,12 @@ class ToDoModel {
         saveItems()
     }
     
+    func count() -> Int {
+        return ToDoListArray.count
+    }
+    
     func saveItems() {
         delegate.reloadData()
         StorageStateController.saveToDoItems()
-    }
-    
-    func count() -> Int {
-        return ToDoListArray.count
     }
 }
