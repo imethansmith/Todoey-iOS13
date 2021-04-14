@@ -27,6 +27,14 @@ class CategoryModel {
         }
     }
     
+    func getCategory(at: Int) -> Category {
+        return categoryArray[at]
+    }
+    
+    func getCategoryString(at: Int) -> String {
+        return categoryArray[at].type!
+    }
+    
     func addCategory(type: String) {
         let newCategory = Category(context: coreDataContext)
         newCategory.type = type

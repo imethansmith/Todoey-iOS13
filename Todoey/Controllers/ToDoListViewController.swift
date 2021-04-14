@@ -10,27 +10,32 @@ import UIKit
 
 class ToDoListViewController: UITableViewController {
     
-    let toDoModel = ToDoModel()
-    
     @IBOutlet var toDoItemsList: UITableView!
+    var toDoModel: ToDoModel?
+
+    var selectedCategoryString : String? {
+        didSet {
+            toDoModel = ToDoModel(selectedCategory: selectedCategoryString!)
+            self.reloadData()
+        }
+    }
+    var selectedCategory : Category?
     
     override func viewDidLoad() {
-        // Retrieve any stored ToDoItems
         super.viewDidLoad()
-        toDoModel.delegate = self
-        // Do any additional setup after loading the view.
+        toDoModel!.delegate = self
     }
     
     //MARK: - TableView Datasource Methods
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return toDoModel.count()
+        return toDoModel!.count()
     }
     
     override func tableView(_ tableView: UITableView,
                             cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ToDoItemCell", for: indexPath)
-        let item = toDoModel.retrieveItem(at: indexPath.row)
+        let item = toDoModel!.retrieveItem(at: indexPath.row)
         
         cell.textLabel!.text = item.toDo
         cell.accessoryType = item.checked ? .checkmark : .none
@@ -42,8 +47,8 @@ class ToDoListViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // Toggle item checked, save data, reload view, play deselection animation
-        toDoModel.toggleItemChecked(at: indexPath.row)
-        toDoModel.saveItems()
+        toDoModel!.toggleItemChecked(at: indexPath.row)
+        toDoModel!.saveItems()
         
         tableView.deselectRow(at: indexPath, animated: true)
     }
@@ -56,7 +61,7 @@ class ToDoListViewController: UITableViewController {
         let alert = UIAlertController(title: "What's next?", message: "", preferredStyle: .alert)
         let action = UIAlertAction(title: "Add", style: .default) { (action) in
             // Add item to model, reload view
-            self.toDoModel.addItem(text: textField.text!)
+            self.toDoModel!.addItem(text: textField.text!, category: self.selectedCategory!)
         }
         
         alert.addTextField { (alertTextField) in
@@ -73,12 +78,12 @@ class ToDoListViewController: UITableViewController {
 
 extension ToDoListViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        toDoModel.searchItems(searchText: searchBar.text!)
+        toDoModel!.searchItems(searchText: searchBar.text!)
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if (searchBar.text?.count == 0) {
-            toDoModel.retrieveFullToDoItems()
+            toDoModel!.retrieveFullToDoItems(category: "\(String(describing: selectedCategoryString))")
             DispatchQueue.main.async {
                 searchBar.resignFirstResponder()
             }

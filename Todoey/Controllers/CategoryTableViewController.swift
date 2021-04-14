@@ -52,12 +52,21 @@ class CategoryTableViewController: UITableViewController {
         
         return cell
     }
-    //MARK: - Data Manipulation Methods
-    
-    
-    
     
     //MARK: - TableView Delegate Methods
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        performSegue(withIdentifier: "GoToItems", sender: self)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let destinationVC = segue.destination as! ToDoListViewController
+                
+        if let indexPath = tableView.indexPathForSelectedRow {
+            destinationVC.selectedCategory = categoryModel.getCategory(at: indexPath.row)
+            destinationVC.selectedCategoryString = categoryModel.getCategoryString(at: indexPath.row)
+        }
+    }
 }
 
 //MARK: - CategoryTableViewDelegate

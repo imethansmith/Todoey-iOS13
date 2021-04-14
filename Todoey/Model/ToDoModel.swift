@@ -13,13 +13,15 @@ class ToDoModel {
     var toDoListArray = [ToDoItem]()
     var coreDataContext = StorageStateController.coreDataContext
     var delegate: ToDoListDelegate!
+    var category: String?
     
-    init() {
-        retrieveFullToDoItems()
+    init(selectedCategory: String) {
+        category = selectedCategory
+        retrieveFullToDoItems(category: category!)
     }
     
-    func retrieveFullToDoItems() {
-        toDoListArray = StorageStateController.fetchToDoItemsArray()
+    func retrieveFullToDoItems(category: String) {
+        toDoListArray = StorageStateController.fetchToDoItemsArray(searchCategory: category)
         
         // If delegate has been initialised
         if delegate != nil {
@@ -27,10 +29,15 @@ class ToDoModel {
         }
     }
     
-    func addItem(text: String) {
+    func retrieveItem(at: Int) -> ToDoItem {
+        return toDoListArray[at]
+    }
+    
+    func addItem(text: String, category: Category) {
         let newItem = ToDoItem(context: coreDataContext)
         newItem.toDo = text
         newItem.checked = false
+        newItem.parentCategory = category
         
         toDoListArray.append(newItem)
         
@@ -38,12 +45,8 @@ class ToDoModel {
         saveItems()
     }
     
-    func retrieveItem(at: Int) -> ToDoItem {
-        return toDoListArray[at]
-    }
-    
     func searchItems(searchText: String) {
-        if let result = StorageStateController.searchItem(searchText: searchText) {
+        if let result = StorageStateController.searchItem(searchCategory: category!, searchText: searchText) {
             toDoListArray = result
         } else {
             print("No items found.")
