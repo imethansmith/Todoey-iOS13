@@ -27,12 +27,9 @@ class CategoryModel {
         }
     }
     
-    func getCategory(at: Int) -> Category {
-        return categoryArray[at]
-    }
-    
-    func getCategoryString(at: Int) -> String {
-        return categoryArray[at].type!
+    func getCategory(at: Int) -> CategoryItem {
+        let index = categoryArray[at]
+        return CategoryItem(category: index, type: index.type!)
     }
     
     func addCategory(type: String) {

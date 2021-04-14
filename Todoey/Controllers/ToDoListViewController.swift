@@ -13,13 +13,12 @@ class ToDoListViewController: UITableViewController {
     @IBOutlet var toDoItemsList: UITableView!
     var toDoModel: ToDoModel?
 
-    var selectedCategoryString : String? {
+    var selectedCategory : CategoryItem? {
         didSet {
-            toDoModel = ToDoModel(selectedCategory: selectedCategoryString!)
+            toDoModel = ToDoModel(selectedCategory: selectedCategory!)
             self.reloadData()
         }
     }
-    var selectedCategory : Category?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -83,7 +82,7 @@ extension ToDoListViewController: UISearchBarDelegate {
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if (searchBar.text?.count == 0) {
-            toDoModel!.retrieveFullToDoItems(category: "\(String(describing: selectedCategoryString))")
+            toDoModel!.retrieveFullToDoItems(category: "\(String(describing: selectedCategory))")
             DispatchQueue.main.async {
                 searchBar.resignFirstResponder()
             }

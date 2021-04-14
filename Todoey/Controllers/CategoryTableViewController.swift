@@ -64,7 +64,6 @@ class CategoryTableViewController: UITableViewController {
                 
         if let indexPath = tableView.indexPathForSelectedRow {
             destinationVC.selectedCategory = categoryModel.getCategory(at: indexPath.row)
-            destinationVC.selectedCategoryString = categoryModel.getCategoryString(at: indexPath.row)
         }
     }
 }
