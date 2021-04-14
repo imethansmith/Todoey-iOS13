@@ -29,17 +29,20 @@ extension StorageStateController {
     
     static func searchItem(searchCategory: String, searchText: String) -> [ToDoItem]? {
         let request : NSFetchRequest<ToDoItem> = ToDoItem.fetchRequest()
-        
-        request.predicate = NSPredicate(format: "toDo CONTAINS[cd] %@", searchText)
+        let predicate = NSPredicate(format: "toDo CONTAINS[cd] %@", searchText)
         request.sortDescriptors = [NSSortDescriptor(key: "toDo", ascending: true)]
-        return fetchToDoItemsArray(searchCategory: searchCategory, request: request)
+        return fetchToDoItemsArray(searchCategory: searchCategory, request: request, predicate: predicate)
     }
     
-    static func fetchToDoItemsArray(searchCategory: String, request: NSFetchRequest<ToDoItem> = ToDoItem.fetchRequest()) -> [ToDoItem] {
+    static func fetchToDoItemsArray(searchCategory: String, request: NSFetchRequest<ToDoItem> = ToDoItem.fetchRequest(), predicate: NSPredicate? = nil) -> [ToDoItem] {
 
-        let predicate = NSPredicate(format: "parentCategory.type MATCHES %@", searchCategory)
+        let categoryPredicate = NSPredicate(format: "parentCategory.type MATCHES %@", searchCategory)
         
-        request.predicate = predicate
+        if (predicate != nil) {
+            request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [categoryPredicate, predicate!])
+        } else {
+            request.predicate = categoryPredicate
+        }
         
         do {
             return try coreDataContext.fetch(request)
